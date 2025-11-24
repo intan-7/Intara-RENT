@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sewa buku online dengan mudah di Intara Rent. Lihat daftar buku, harga, dan cara sewa sekarang!">
+    <meta name="keywords" content="sewa buku, rental buku, Intara Rent, novel, komik">
+    <title>Sewa Buku Intara Rent</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8f0;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgb(205, 191, 161);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1b1002;
+        }
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .menu button {
+            background: #544b38;
+            color: rgb(255, 255, 255);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .menu button:hover {
+            background: #dfcab3;
+        }
+        .content {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+        }
+        .content.active {
+            display: block;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        .book-list li {
+            cursor: pointer;
+            color: #15a5a5;
+            text-decoration: underline;
+        }
+        .book-list li:hover {
+            color: #17867c;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: black;
+        }
+        /* Form Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, select, button[type="submit"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button[type="submit"] {
+            background: #544b38;
+            color: white;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background: #dfcab3;
+        }
+        a {
+            color: #12b6c1;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        @media (max-width: 600px) {
+            .menu {
+                flex-direction: column;
+            }
+            .menu button {
+                width: 100%;
+            }
+            .modal-content {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💬 Intara RENT</h1>
+        <p>Halo! 👋<br>Selamat datang di <strong>Sewa Buku Intara Rent</strong>.<br>Silakan pilih menu di bawah ini ya:</p>
+
+        <div class="menu">
+            <button onclick="showContent('buku')">📚 Lihat Daftar Buku</button>
+            <button onclick="showContent('harga')">💸 Harga & Durasi Sewa</button>
+            <button onclick="showContent('cara')">📦 Cara Sewa</button>
+            <button onclick="showContent('aturan')">⚠️ Syarat, Denda & Jaminan</button>
+            <button onclick="showContent('ongkir')">🚚 Pengantaran / COD</button>
+            <button onclick="openWhatsApp()">💬 Tanya Admin (WhatsApp)</button>
+            <button onclick="openFacebook()">📘 Kunjungi Facebook Kami</button>
+        </div>
+
+        <div id="buku" class="content">
+            <h3>📚 Lihat Daftar Buku</h3>
+            <p>Klik judul buku untuk lihat detail:</p>
+            <ul class="book-list">
+                <li onclick="showBookDetail('ardhan')">Ardhan</li>
+                <li onclick="showBookDetail('fromg')">From G to N</li>
+                <li onclick="showBookDetail('gibran')">Gibran Dirgantara</li>
+                <li onclick="showBookDetail('howto')">How to See?</li>
+                <li onclick="showBookDetail('mybest')">My Best Enemy</li>
+                <li onclick="showBookDetail('sejarah')">Sejarah Dunia yang Disembunyikan</li>
+                <li onclick="showBookDetail('withyou')">With You</li>
+            </ul>
+        </div>
+
+        <div id="harga" class="content">
+            <h3>💸 Harga & Durasi Sewa</h3>
+            <p>Durasi sewa & harga yang bisa dipilih:</p>
+            <ul>
+                <li>7 hari - Rp.7.000</li>
+                <li>10 hari - Rp.9.000</li>
+                <li>14 hari - Rp.13.000</li>
+            </ul>
+        </div>
+
+        <div id="cara" class="content">
+            <h3>📦 Cara Sewa</h3>
+            <ol>
+                <li>Pilih buku</li>
+                <li>Isi form di bawah dan kirim ke admin</li>
+                <li>Bayar jaminan</li>
+                <li>Buku dikirim / diambil</li>
+            </ol>
+            <p><strong>Form Sewa:</strong></p>
+            <form onsubmit="sendToWhatsApp(event)">
+                <label for="nama">Nama:</label>
+                <input type="text" id="nama" name="nama" required>
+                
+                <label for="judul">Judul Buku:</label>
+                <input type="text" id="judul" name="judul" required>
+                
+                <label for="alamat">Alamat:</label>
+                <input type="text" id="alamat" name="alamat" required>
+
+                <label for="sewa & harga">Sewa & Harga:</label>
+                <select id="sewa & harga" name="sewa & harga" required>
+                    <option value="">Pilih</option>
+                    <option value="7Hari">7 Hari - Rp.7.000</option>
+                    <option value="10Hari">10 Hari - Rp.10.000</option>
+                    <option value="14Hari">14 Hari - Rp.13.000</option>
+                </select>
+                
+                <label for="ambilantar">Ambil/Antar:</label>
+                <select id="ambilantar" name="ambilantar" required>
+                    <option value="">Pilih</option>
+                    <option value="Ambil">Ambil</option>
+                    <option value="Antar">Antar</option>
+                </select>
+                
+                <button type="submit">Kirim ke WhatsApp</button>
+            </form>
+            <p><em>Form akan dikirim langsung ke admin via WhatsApp.</em></p>
+        </div>
+
+        <div id="aturan" class="content">
+            <h3>⚠️ Syarat, Denda & Jaminan</h3>
+            <h4>Syarat</h4>
+            <ul>
+                <li>Tidak boleh menyebarkan isi buku (foto/link/file) dan lainnya. Pelanggaran akan dikenakan sanksi sesuai hukum hak cipta dan di blacklist permanen dari layanan sewa kami.</li>
+                <li>Pengantaran ada biaya ongkir sesuai jarak.</li>
+                <li>Buku harus dijaga dengan baik.</li>
+            </ul>
+            <h4>Denda</h4>
+            <ul>
+                <li><strong>Buku Rusak parah:</strong> sobek besar, halaman hilang, buku basah → <em>Denda 50% harga buku + buku dikembalikan</em></li>
+                <li><strong>Buku Rusak ringan:</strong> lipatan, kusut, coretan kecil → <em>Denda 20% + buku dikembalikan</em></li>
+                <li><strong>Buku Hilang:</strong> ganti sesuai harga buku</li>
+                <li><em>Contoh: Harga buku Rp.99.500, Jika rusak parah 50% x Rp.99.500 = Rp.49.750. Jika rusak ringan 20% x Rp.99.500 = Rp.19.900 dan buku wajib dikembalikan. Jika hilang bayar penuh Rp.99.500</em></li>
+            </ul>
+            <h4>Jaminan</h4>
+            <ul>
+                <li>Bayar jaminan <strong>Rp 30.000</strong></li>
+                <li>Kirim foto wajah + identitas (nama & nomor WA)</li>
+                <li>Dikembalikan 100% & dihapus setelah buku kembali</li>
+            </ul>
+        </div>
+
+        <div id="ongkir" class="content">
+            <h3>🚚 Pengantaran / COD</h3>
+            <p>Kami melayani:</p>
+            <ul>
+                <li>Antar ke rumah</li>
+                <li>COD titik tertentu</li>
+                <li>Ambil langsung</li>
+            </ul>
+            <p>Ongkir Rp.2.000 - Rp.10.000 menyesuaikan jarak</p>
+        </div>
+
+        <footer>
+            © 2023 Sewa Buku Intara Rent. Semua hak cipta dilindungi.
+        </footer>
+    </div>
+
+    <!-- Modal untuk Detail Buku -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Detail Buku</h3>
+            <p><strong>Penulis:</strong> <span id="modalAuthor"></span></p>
+            <p><strong>Genre:</strong> <span id="modalGenre"></span></p>
+            <p><strong>Jumlah Halaman:</strong> <span id="modalPages"></span></p>
+            <p><strong>Blurb:</strong> <span id="modalBlurb"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function showContent(id) {
+            // Sembunyikan semua konten
+            const contents = document.querySelectorAll('.content');
+            contents.forEach(content => content.classList.remove('active'));
+            // Tampilkan konten yang dipilih
+            const selectedContent = document.getElementById(id);
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            } else {
+                console.error('Konten dengan ID ' + id + ' tidak ditemukan.');
+            }
+        }
+
+        function openWhatsApp() {
+            try {
+                window.open('https://wa.me/6285260877449', '_blank');
+            } catch (e) {
+                alert('Gagal membuka WhatsApp.');
+            }
+        }
+
+        function openFacebook() {
+            try {
+                window.open('https://www.facebook.com/share/1NEtohreis/', '_blank');
+            } catch (e) {
+                alert('Gagal membuka Facebook.');
+            }
+        }
+
+        // Data buku (ganti dengan data asli)
+        const books = {
+            ardhan: 
+            { title: 'Ardhan',
+            author: 'ValenciaAnggana',
+            genre: 'Teen Fiction',
+            pages: '208 halaman', 
+            blurb: `
+            "Hidup bukan seperti gulali yang selalu manis pada saat kita cicipi, tapi 
+            juga tentang rasa sakit, kecewa, perih, dan tangis setelah bahagia.
+
+            Dia adalah Ardan Arizkiandra, laki-laki tampan serta terkenal bad boy di sekolah. 
+            Dia adalah laki-laki yang punya selera humor rendah. Dia selalu membuat Andine tertawa 
+            dengan lawakan recehnya, bahkan gombal yang berhasil membuat pipi perempuan itu bersemu merah.
+
+            "Apakah playboy kayak gue bisa berubah karena cinta?"`           
+            },
+            fromg: 
+            { title: 'From G to N', 
+            author: 'Jenni Alfikri', 
+            genre: 'Teen Fiction', 
+            pages: '328 halaman',
+            blurb: `
+            Punya ayah yang strict, membuat Laneya hanya bisa pasrah dijodohin.
+            Mau nolak kayak gimanapun, Laneya nggak akan bisa melawan. Jadi, 
+            waktu sang papa kasih dia nomor dengan nama konta "Aa Avi", Laneya cuma terima,
+            tapi nggak mau turunin gengsi buat chat duluan.
+            
+            Hingga akhirnya, waktu dia lagi misuhin perjodohannya,
+            Laneya bingung pas dia dapat chat dari "Aa Avi".
+            
+            Aa Avi: 
+            "Kaalau lo mau tau Aa Avi siapa, nengok ke kanan."
+            
+            Laneya udah berharap akan nemuin sososk Aa Avi itu, tapi pas
+            dia nengok, yang Lenaya temuin malah Kak G- anggota band kampusnya
+            yang famous itu, sekaligus kakak dari murid les renangnya. Baru saja dia may samperin
+            Kak G buat tanyain sosok Aa Avi, Laneya langsung dibungkam sama kalimat dari laki-laki itu.
+            
+            "Halo, Calon Istri."`
+            },
+            gibran: { 
+            title: 'Gibran Dirgantara', 
+            author: 'Falistiyana', 
+            genre: 'Novel', 
+            pages: '348 halaman', 
+            blurb: `
+            Satu dari seratus sekian hati yang pernah singgah, kamu yang menjadi terakhir untuk selamanya.
+
+            Bagi Gibran Dirgantara, satu pacar saja tidak cukup. Namun semuanya 
+            berubah saat ia dekat dengan Abel, bendahara galak di kelasnya. Menunggak uang kas, 
+            mengganggu, dan menggoda Abel menjadi kegiatan Gibran setiap hari. Hingga tanpa sadar, cowok itu terjebak 
+            dengan permainannya sendiri dan jatuh cinta dengan Abel.
+
+            Saat Gibran sudah mendapatkan apa yang ia mau, badai besar menghantam hubungan mereka. 
+            Banyak pengorbanan yang Gibran lakukan. Namun, Abel tetap enggan kembali pada Gibran 
+            sampai akhirnya sesuatu terjadi dengan Gibran.
+            
+            Lalu bagaimana dengan akhir kisah mereka? Apakah Gibran dan Abel akan kembali bersama? Atau memilih untuk saling merelakan?
+
+            Abel: “Lo belum bayar uang kas sama sekali. Buruan lunasin atau gue laporan ke wali kelas?”
+
+            Gibran: “Nggak asyik lo! Lo bisa, kan, nagihnya di kelas? Jangan di sini, malu dilihat banyak orang. Takutnya rumah tangga kita dikira ada masalah.”
+
+            Abel: “Buruan bayar! Gue capek nagih uang kas lo terus!”
+
+            Gibran: “Kalau lo capek nagih uang kas, gimana kalau lu nagih hati gue saja?”
+
+            Abel: “Hati lu nggak menjamin buat lunasin uang kas, kecuali hati lo dijual.”
+
+            Gibran: “Gila lo! Kalau hati gue dijual, terus nanti yang mencintai lo siapa?!”`
+            },
+            howto: { 
+            title: 'How to See?', 
+            author: 'Asabell Audida', 
+            genre: 'Fiction 18+', 
+            pages: '280 halaman', 
+            blurb: `
+            Vee, sosok makhluk yang mampu membentangkan saya raksasa di punggungnya – guardian yang dibebani dengan tanggung jawab menjaga keseimbangan dunia.
+
+            Sebuah peristiwa membuatnya harus kehilangan healer-nya – sosok penyembuh yang menyempurnakan dirinya. 
+            Vee butuh healer pengganti untuk kembali menjadi guardian yang sempurna, dan hanya ada satu cara. Ia harus menemukan Sky. 
+            Hanya Sky yang mampu membantunya mendapatkan healer-nya kembali.
+
+            Sky, manusia yang takut gelap harus mengalami kebutaan karena suatu kecelakaan. 
+            Hal ini membuatnya kerap putus asa atas kondisinya. Namun, semuanya berubah saat Vee datang ke kehidupannya, 
+            memberikannya secercah harapan yang tak pernah ia duga sebelumnya, dengan satu penawaran yang sangat mengejutkan.
+
+            Lantas, bagaimanakah keputusan Sky? Apakah ia akan menerima tawaran Vee agar ia bisa melihat kembali? Apakah Sky siap untuk hidup dengan makhluk yang tidak pernah ia lihat sebelumnya? Atau memilih untuk buta selamanya dan larut dalam kegelapan?
+
+            Vee: “Aku bisa membuatmu melihat lagi, apa kau mau?”
+
+            Sky: “Ta-tapi, ak-aku ingin pulang. Aku tidak mau melakukannya.”
+
+            Vee: “Jika kau terus menangis, aku tidak akan pernah memulangkanmu.”
+
+            Sky: “Jadi, aku bisa pulang?”
+
+            Vee: “Bisa, setelah kau memberikanku healer yang sempurna.”`
+            },
+            mybest: { 
+            title: 'My Best Enemy', 
+            author: 'Nur Asyikin', 
+            genre: 'Teen Fiction', 
+            pages: '320 halaman', 
+            blurb: `
+            Perasaan cinta nggak bisa ditafsirkan oleh keadaan. Kemarin gue benci sama lo, sekarang gue falling in love sama lo. 
+            Kemarin lo baik sama gue, sekarang lo malah nyakitin gue.
+
+            Zeva:
+            Zidan? Maksud kalian, si makhluk ambis itu? Dia itu suka banget marah-marah sama gue, 
+            apalagi kalau lagi jelasin pelajaran. Banyak yang suka sama lo, termasuk Erika, si cewek yang kayak ular sawah, tuh. 
+            Makanya jadi cowok jangan terlalu perfect! Lo, Zidan Airlangga, adalah my best enemy tahu nggak?
+
+            Zidan:
+            Walaupun Zeva cantik, otak dia itu lemot unlimited 24 jam. Di satu sisi dia anaknya baik, kok. 
+            Dan saking polosnya, gue harus jagain dia dari orang-orang yang cuma mau manfaatin dia, salah satunya Arga. 
+            Tapi, yang namanya Zeva, emang orangnya ngeyel. Kata-kata pedas yang gue keluarin buat dia sama sekali nggak mempan! 
+            Lo, Zeva Anastasya, sebenarnya gue benci lo, tapi...`
+            },
+            sejarah: { 
+            title: 'Sejarah Dunia yang Disembunyikan', 
+            author: 'Jonathan Black', 
+            genre: 'Sejarah', 
+            pages: '636 halaman', 
+            blurb: `
+            Banyak orang mengatakan bahwa sejarah ditulis oleh para pemenang. Tetapi, 
+            bagaimana jika sejarah yang kita ketahui justru ditulis oleh orang yang salah?
+
+            Dalam buku kontroversial ini, Jonathan Black mengupas misteri sejarah dunia: dari mitologi Yunani, 
+            Mesir kuno, cerita rakyat Yahudi, Kristen, Freemason, Karel Agung, Don Quixote, George Washington, Hitler, hingga legenda Seribu Satu Malam.
+            Ia menunjukan bahwa sejarah yang biasa kita percaya mungkin hanyalah sebagian dari cerita yang disembunyikan selama lebih dari 3000 tahun.
+
+            “Inilah wahyu yang mengejutkan, yang menunjukkan bahwa dunia sangatlah aneh dan misterius...” – Graham Hancock
+
+            “Bacaan yang sangat mengasyikkan, penjelajahan esoteris dari awal sejarah hingga hari ini...” – Patricia Scanlon
+
+            “Penuh teori-teori aneh namun menghibur.” – Publishers Weekly` 
+            },
+            withyou: { 
+            title: 'With You', 
+            author: 'Aloisiatherin', 
+            genre: 'Novel', 
+            pages: '352 halaman', 
+            blurb: `
+            Stella Aziya, cewek liar dan bandel, yang tiba-tiba dinikahkan diam-diam dengan Samudera Haidar, cowok alim, tajir, berpendidikan tinggi, tapi kudet dan kaku. 
+            Padahal, Stella bercita-cita menikah dengan sugar daddy atau bad boy ketua geng.
+
+            Seribu rencana gila Stella buat untuk bikin Haidar kena mental. Namun kenyamanan perlahan tumbuh dalam dirinya.
+
+            Apakah kisah mereka akan berjalan mulus? Atau ke’prik’an Haidar tidak bisa meluluhkan hati Stella?
+
+            Stella: “Gue nikah sama cowok model apa sih, Tuhan?!”
+
+            Haidar: “Yang seperti saya ini cuma ada satu di dunia, lho.”
+
+            Stella: “Gila lo! Dasar suami prik!”
+
+            Haidar: “Astagfirullah, Stella…”`
+            }
+        };
+
+        function showBookDetail(bookId) {
+            const book = books[bookId];
+            if (book) {
+                document.getElementById('modalTitle').textContent = book.title;
+                document.getElementById('modalAuthor').textContent = book.author;
+                document.getElementById('modalGenre').textContent = book.genre;
+                document.getElementById('modalPages').textContent = book.pages;
+                document.getElementById('modalBlurb').textContent = book.blurb;
+                document.getElementById('bookModal').style.display = 'block';
+            } else {
+                console.error('Buku dengan ID ' + bookId + ' tidak ditemukan.');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('bookModal').style.display = 'none';
+        }
+
+        function sendToWhatsApp(event) {
+            event.preventDefault();
+            const nama = document.getElementById('nama').value;
+            const judul = document.getElementById('judul').value;
+            const alamat = document.getElementById('alamat').value;
+            const ambilantar = document.getElementById('ambilantar').value;
+            
+            if (!nama || !judul || !alamat || !ambilantar) {
+                alert('Harap isi semua field!');
+                return;
+            }
+            
+            const message = `Halo Admin, saya ingin sewa buku:\nNama: ${nama}\nJudul Buku: ${judul}\nAlamat: ${alamat}\nSewa & Harga: ${sewa & harga}\nAmbil/Antar: ${ambilantar}`;
+            const url = `https://wa.me/6285260877449?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
