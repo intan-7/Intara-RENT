@@ -24,6 +24,12 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+        .logo {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            margin-bottom: 20px;
+        }
         h1 {
             color: #1b1002;
         }
@@ -63,13 +69,61 @@
             list-style-type: disc;
             margin-left: 20px;
         }
-        .book-list li {
-            cursor: pointer;
-            color: #15a5a5;
-            text-decoration: underline;
+        /* Slider Styles */
+        .slider {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        .book-list li:hover {
-            color: #17867c;
+        .slider-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .book-card {
+            min-width: 200px;
+            margin: 10px;
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .book-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .book-card button {
+            background: #15a5a5;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .book-card button:hover {
+            background: #17867c;
+        }
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1;
+        }
+        .slider-nav.prev {
+            left: 0;
+        }
+        .slider-nav.next {
+            right: 0;
         }
         /* Modal Styles */
         .modal {
@@ -121,6 +175,10 @@
         button[type="submit"]:hover {
             background: #dfcab3;
         }
+        .discount {
+            color: green;
+            font-weight: bold;
+        }
         a {
             color: #12b6c1;
             text-decoration: none;
@@ -143,11 +201,20 @@
             .modal-content {
                 width: 90%;
             }
+            .slider {
+                max-width: 100%;
+            }
+            .book-card {
+                min-width: 150px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Gambar Logo/Sampul di Paling Atas -->
+        <img src="Logo Intara Rent.jpeg" alt="Logo Intara Rent" class="logo"> <!-- Ganti src dengan URL gambar logo Anda -->
+
         <h1>💬 Intara RENT</h1>
         <p>Halo! 👋<br>Selamat datang di <strong>Sewa Buku Intara Rent</strong>.<br>Silakan pilih menu di bawah ini ya:</p>
 
@@ -163,16 +230,14 @@
 
         <div id="buku" class="content">
             <h3>📚 Lihat Daftar Buku</h3>
-            <p>Klik judul buku untuk lihat detail:</p>
-            <ul class="book-list">
-                <li onclick="showBookDetail('ardhan')">Ardhan</li>
-                <li onclick="showBookDetail('fromg')">From G to N</li>
-                <li onclick="showBookDetail('gibran')">Gibran Dirgantara</li>
-                <li onclick="showBookDetail('howto')">How to See?</li>
-                <li onclick="showBookDetail('mybest')">My Best Enemy</li>
-                <li onclick="showBookDetail('sejarah')">Sejarah Dunia yang Disembunyikan</li>
-                <li onclick="showBookDetail('withyou')">With You</li>
-            </ul>
+            <p>Geser slider untuk lihat buku:</p>
+            <div class="slider">
+                <button class="slider-nav prev" onclick="slide(-1)">&#10094;</button>
+                <div class="slider-container" id="sliderContainer">
+                    <!-- Kartu Buku akan di-generate oleh JS -->
+                </div>
+                <button class="slider-nav next" onclick="slide(1)">&#10095;</button>
+            </div>
         </div>
 
         <div id="harga" class="content">
@@ -181,7 +246,7 @@
             <ul>
                 <li>7 hari - Rp.7.000</li>
                 <li>10 hari - Rp.9.000</li>
-                <li>14 hari - Rp.13.000</li>
+                <li>14 hari - Rp.12.000</li>
             </ul>
         </div>
 
@@ -204,12 +269,12 @@
                 <label for="alamat">Alamat:</label>
                 <input type="text" id="alamat" name="alamat" required>
 
-                <label for="sewa & harga">Sewa & Harga:</label>
-                <select id="sewa & harga" name="sewa & harga" required>
+                <label for="sewaharga">Sewa & Harga:</label>
+                <select id="sewaharga" name="sewaharga" required>
                     <option value="">Pilih</option>
-                    <option value="7Hari">7 Hari - Rp.7.000</option>
-                    <option value="10Hari">10 Hari - Rp.10.000</option>
-                    <option value="14Hari">14 Hari - Rp.13.000</option>
+                    <option value="7 Hari - Rp.7.000">7 Hari - Rp.7.000</option>
+                    <option value="10 Hari - Rp.9.000">10 Hari - Rp.9.000</option>
+                    <option value="14 Hari - Rp.12.000">14 Hari - Rp.12.000</option>
                 </select>
                 
                 <label for="ambilantar">Ambil/Antar:</label>
@@ -217,11 +282,13 @@
                     <option value="">Pilih</option>
                     <option value="Ambil">Ambil</option>
                     <option value="Antar">Antar</option>
+                    <option value="Jumpatengah">Jumpa Tengah</option>
                 </select>
                 
                 <button type="submit">Kirim ke WhatsApp</button>
             </form>
-            <p><em>Form akan dikirim langsung ke admin via WhatsApp.</em></p>
+            <p id="memberStatus"><em>Status Member: Belum member (sewa 0 kali). Sewa 5 kali untuk diskon!</em></p>
+            <p><em>Form akan dikirim langsung ke admin via WhatsApp. Dan untuk Jumpa tengah konfirmasi alamatnya ke admin</em></p>
         </div>
 
         <div id="aturan" class="content">
@@ -259,7 +326,7 @@
         </div>
 
         <footer>
-            © 2025 Sewa Buku Intara Rent. Semua hak cipta dilindungi.
+            © 2025 Intara Rent. Semua hak cipta dilindungi.
         </footer>
     </div>
 
@@ -276,11 +343,49 @@
     </div>
 
     <script>
+        let currentSlide = 0;
+
+        // Data buku (dengan gambar placeholder)
+        const books = {
+            ardhan: { title: 'Ardhan', author: 'ValenciaAnggana', genre: 'Teen Fiction', pages: '208 halaman', blurb: '"Hidup bukan seperti gulali yang selalu manis pada saat kita cicipi, tapi juga tentang rasa sakit, kecewa, perih, dan tangis setelah bahagia. Dia adalah Ardan Arizkiandra, laki-laki tampan serta terkenal bad boy di sekolah. Dia adalah laki-laki yang punya selera humor rendah. Dia selalu membuat Andine tertawa dengan lawakan recehnya, bahkan gombal yang berhasil membuat pipi perempuan itu bersemu merah. "Apakah playboy kayak gue bisa berubah karena cinta?"', image: 'Ardhan.jpeg' },
+            fromg: { title: 'From G to N', author: 'Jenni Alfikri', genre: 'Teen Fiction', pages: '328 halaman', blurb: 'Punya ayah yang strict, membuat Laneya hanya bisa pasrah dijodohin. Mau nolak kayak gimanapun, Laneya nggak akan bisa melawan. Jadi, waktu sang papa kasih dia nomor dengan nama kontak "Aa Avi", Laneya cuma terima, tapi nggak mau turunin gengsi buat chat duluan. Hingga akhirnya, waktu dia lagi misuhin perjodohannya, Laneya bingung pas dia dapat chat dari "Aa Avi". Aa Avi: "Kaalau lo mau tau Aa Avi siapa, nengok ke kanan." Laneya udah berharap akan nemuin sosok Aa Avi itu, tapi pas dia nengok, yang Lenaya temuin malah Kak G- anggota band kampusnya yang famous itu, sekaligus kakak dari murid les renangnya. Baru saja dia may samperin Kak G buat tanyain sosok Aa Avi, Laneya langsung dibungkam sama kalimat dari laki-laki itu. "Halo, Calon Istri."', image: 'From G to N.jpeg' },
+            gibran: { title: 'Gibran Dirgantara', author: 'Falistiyana', genre: 'Novel', pages: '348 halaman', blurb: 'Satu dari seratus sekian hati yang pernah singgah, kamu yang menjadi terakhir untuk selamanya. Bagi Gibran Dirgantara, satu pacar saja tidak cukup. Namun semuanya berubah saat ia dekat dengan Abel, bendahara galak di kelasnya. Menunggak uang kas, mengganggu, dan menggoda Abel menjadi kegiatan Gibran setiap hari. Hingga tanpa sadar, cowok itu terjebak dengan permainannya sendiri dan jatuh cinta dengan Abel. Saat Gibran sudah mendapatkan apa yang ia mau, badai besar menghantam hubungan mereka. Banyak pengorbanan yang Gibran lakukan. Namun, Abel tetap enggan kembali pada Gibran sampai akhirnya sesuatu terjadi dengan Gibran. Lalu bagaimana dengan akhir kisah mereka? Apakah Gibran dan Abel akan kembali bersama? Atau memilih untuk saling merelakan?', image: 'Gibran Dirgantara.jpeg' },
+            howto: { title: 'How to See?', author: 'Asabell Audida', genre: 'Fiction 18+', pages: '280 halaman', blurb: 'Vee, sosok makhluk yang mampu membentangkan sayap raksasa di punggungnya – guardian yang dibebani dengan tanggung jawab menjaga keseimbangan dunia. Sebuah peristiwa membuatnya harus kehilangan healer-nya – sosok penyembuh yang menyempurnakan dirinya. Vee butuh healer pengganti untuk kembali menjadi guardian yang sempurna, dan hanya ada satu cara. Ia harus menemukan Sky. Hanya Sky yang mampu membantunya mendapatkan healer-nya kembali. Sky, manusia yang takut gelap harus mengalami kebutaan karena suatu kecelakaan. Hal ini membuatnya kerap putus asa atas kondisinya. Namun, semuanya berubah saat Vee datang ke kehidupannya, memberikannya secercah harapan yang tak pernah ia duga sebelumnya, dengan satu penawaran yang sangat mengejutkan. Lantas, bagaimanakah keputusan Sky? Apakah ia akan menerima tawaran Vee agar ia bisa melihat kembali? Apakah Sky siap untuk hidup dengan makhluk yang tidak pernah ia lihat sebelumnya? Atau memilih untuk buta selamanya dan larut dalam kegelapan?', image: 'How to See.jpeg' },
+            mybest: { title: 'My Best Enemy', author: 'Nur Asyikin', genre: 'Teen Fiction', pages: '320 halaman', blurb: 'Perasaan cinta nggak bisa ditafsirkan oleh keadaan. Kemarin gue benci sama lo, sekarang gue falling in love sama lo. Kemarin lo baik sama gue, sekarang lo malah nyakitin gue. Zeva: Zidan? Maksud kalian, si makhluk ambis itu? Dia itu suka banget marah-marah sama gue, apalagi kalau lagi jelasin pelajaran. Banyak yang suka sama lo, termasuk Erika, si cewek yang kayak ular sawah, tuh. Makanya jadi cowok jangan terlalu perfect! Lo, Zidan Airlangga, adalah my best enemy tahu nggak? Zidan: Walaupun Zeva cantik, otak dia itu lemot unlimited 24 jam. Di satu sisi dia anaknya baik, kok. Dan saking polosnya, gue harus jagain dia dari orang-orang yang cuma mau manfaatin dia, salah satunya Arga. Tapi, yang namanya Zeva, emang orangnya ngeyel. Kata-kata pedas yang gue keluarin buat dia sama sekali nggak mempan! Lo, Zeva Anastasya, sebenarnya gue benci lo, tapi...', image: 'My Best Enemy.jpeg' },
+            sejarah: { title: 'Sejarah Dunia yang Disembunyikan', author: 'Jonathan Black', genre: 'Sejarah', pages: '636 halaman', blurb: 'Banyak orang mengatakan bahwa sejarah ditulis oleh para pemenang. Tetapi, bagaimana jika sejarah yang kita ketahui justru ditulis oleh orang yang salah? Dalam buku kontroversial ini, Jonathan Black mengupas misteri sejarah dunia: dari mitologi Yunani, Mesir kuno, cerita rakyat Yahudi, Kristen, Freemason, Karel Agung, Don Quixote, George Washington, Hitler, hingga legenda Seribu Satu Malam. Ia menunjukan bahwa sejarah yang biasa kita percaya mungkin hanyalah sebagian dari cerita yang disembunyikan selama lebih dari 3000 tahun. “Inilah wahyu yang mengejutkan, yang menunjukkan bahwa dunia sangatlah aneh dan misterius...” – Graham Hancock “Bacaan yang sangat mengasyikkan, penjelajahan esoteris dari awal sejarah hingga hari ini...” – Patricia Scanlon “Penuh teori-teori aneh namun menghibur.” – Publishers Weekly', image: 'Sejarah Dunia Yang Disembunyikan.jpeg' },
+            withyou: { title: 'With You', author: 'Aloisiatherin', genre: 'Novel', pages: '352 halaman', blurb: 'Stella Aziya, cewek liar dan bandel, yang tiba-tiba dinikahkan diam-diam dengan Samudera Haidar, cowok alim, tajir, berpendidikan tinggi, tapi kudet dan kaku. Padahal, Stella bercita-cita menikah dengan sugar daddy atau bad boy ketua geng. Seribu rencana gila Stella buat untuk bikin Haidar kena mental. Namun kenyamanan perlahan tumbuh dalam dirinya. Apakah kisah mereka akan berjalan mulus? Atau ke’prik’an Haidar tidak bisa meluluhkan hati Stella? Stella: “Gue nikah sama cowok model apa sih, Tuhan?!” Haidar: “Yang seperti saya ini cuma ada satu di dunia, lho.” Stella: “Gila lo! Dasar suami prik!” Haidar: “Astagfirullah, Stella…”', image: 'With You.jpeg' }
+        };
+
+        // Generate slider buku
+        function generateSlider() {
+            const container = document.getElementById('sliderContainer');
+            container.innerHTML = '';
+            Object.keys(books).forEach(bookId => {
+                const book = books[bookId];
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.innerHTML = `
+                    <img src="${book.image}" alt="${book.title}">
+                    <h4>${book.title}</h4>
+                    <button onclick="showBookDetail('${bookId}')">Lihat Detail</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Fungsi slide
+        function slide(direction) {
+            const container = document.getElementById('sliderContainer');
+            const totalSlides = Object.keys(books).length;
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            const translateX = -currentSlide * 220; // 200px card + 20px margin
+            container.style.transform = `translateX(${translateX}px)`;
+        }
+
+        // Fungsi showContent
         function showContent(id) {
-            // Sembunyikan semua konten
             const contents = document.querySelectorAll('.content');
             contents.forEach(content => content.classList.remove('active'));
-            // Tampilkan konten yang dipilih
             const selectedContent = document.getElementById(id);
             if (selectedContent) {
                 selectedContent.classList.add('active');
@@ -289,6 +394,7 @@
             }
         }
 
+        // Fungsi openWhatsApp
         function openWhatsApp() {
             try {
                 window.open('https://wa.me/6285260877449', '_blank');
@@ -297,6 +403,7 @@
             }
         }
 
+        // Fungsi openFacebook
         function openFacebook() {
             try {
                 window.open('https://www.facebook.com/share/1NEtohreis/', '_blank');
@@ -305,168 +412,7 @@
             }
         }
 
-        // Data buku (ganti dengan data asli)
-        const books = {
-            ardhan: 
-            { title: 'Ardhan',
-            author: 'ValenciaAnggana',
-            genre: 'Teen Fiction',
-            pages: '208 halaman', 
-            blurb: `
-            "Hidup bukan seperti gulali yang selalu manis pada saat kita cicipi, tapi 
-            juga tentang rasa sakit, kecewa, perih, dan tangis setelah bahagia.
-
-            Dia adalah Ardan Arizkiandra, laki-laki tampan serta terkenal bad boy di sekolah. 
-            Dia adalah laki-laki yang punya selera humor rendah. Dia selalu membuat Andine tertawa 
-            dengan lawakan recehnya, bahkan gombal yang berhasil membuat pipi perempuan itu bersemu merah.
-
-            "Apakah playboy kayak gue bisa berubah karena cinta?"`           
-            },
-            fromg: 
-            { title: 'From G to N', 
-            author: 'Jenni Alfikri', 
-            genre: 'Teen Fiction', 
-            pages: '328 halaman',
-            blurb: `
-            Punya ayah yang strict, membuat Laneya hanya bisa pasrah dijodohin.
-            Mau nolak kayak gimanapun, Laneya nggak akan bisa melawan. Jadi, 
-            waktu sang papa kasih dia nomor dengan nama konta "Aa Avi", Laneya cuma terima,
-            tapi nggak mau turunin gengsi buat chat duluan.
-            
-            Hingga akhirnya, waktu dia lagi misuhin perjodohannya,
-            Laneya bingung pas dia dapat chat dari "Aa Avi".
-            
-            Aa Avi: 
-            "Kaalau lo mau tau Aa Avi siapa, nengok ke kanan."
-            
-            Laneya udah berharap akan nemuin sososk Aa Avi itu, tapi pas
-            dia nengok, yang Lenaya temuin malah Kak G- anggota band kampusnya
-            yang famous itu, sekaligus kakak dari murid les renangnya. Baru saja dia may samperin
-            Kak G buat tanyain sosok Aa Avi, Laneya langsung dibungkam sama kalimat dari laki-laki itu.
-            
-            "Halo, Calon Istri."`
-            },
-            gibran: { 
-            title: 'Gibran Dirgantara', 
-            author: 'Falistiyana', 
-            genre: 'Novel', 
-            pages: '348 halaman', 
-            blurb: `
-            Satu dari seratus sekian hati yang pernah singgah, kamu yang menjadi terakhir untuk selamanya.
-
-            Bagi Gibran Dirgantara, satu pacar saja tidak cukup. Namun semuanya 
-            berubah saat ia dekat dengan Abel, bendahara galak di kelasnya. Menunggak uang kas, 
-            mengganggu, dan menggoda Abel menjadi kegiatan Gibran setiap hari. Hingga tanpa sadar, cowok itu terjebak 
-            dengan permainannya sendiri dan jatuh cinta dengan Abel.
-
-            Saat Gibran sudah mendapatkan apa yang ia mau, badai besar menghantam hubungan mereka. 
-            Banyak pengorbanan yang Gibran lakukan. Namun, Abel tetap enggan kembali pada Gibran 
-            sampai akhirnya sesuatu terjadi dengan Gibran.
-            
-            Lalu bagaimana dengan akhir kisah mereka? Apakah Gibran dan Abel akan kembali bersama? Atau memilih untuk saling merelakan?
-
-            Abel: “Lo belum bayar uang kas sama sekali. Buruan lunasin atau gue laporan ke wali kelas?”
-
-            Gibran: “Nggak asyik lo! Lo bisa, kan, nagihnya di kelas? Jangan di sini, malu dilihat banyak orang. Takutnya rumah tangga kita dikira ada masalah.”
-
-            Abel: “Buruan bayar! Gue capek nagih uang kas lo terus!”
-
-            Gibran: “Kalau lo capek nagih uang kas, gimana kalau lu nagih hati gue saja?”
-
-            Abel: “Hati lu nggak menjamin buat lunasin uang kas, kecuali hati lo dijual.”
-
-            Gibran: “Gila lo! Kalau hati gue dijual, terus nanti yang mencintai lo siapa?!”`
-            },
-            howto: { 
-            title: 'How to See?', 
-            author: 'Asabell Audida', 
-            genre: 'Fiction 18+', 
-            pages: '280 halaman', 
-            blurb: `
-            Vee, sosok makhluk yang mampu membentangkan saya raksasa di punggungnya – guardian yang dibebani dengan tanggung jawab menjaga keseimbangan dunia.
-
-            Sebuah peristiwa membuatnya harus kehilangan healer-nya – sosok penyembuh yang menyempurnakan dirinya. 
-            Vee butuh healer pengganti untuk kembali menjadi guardian yang sempurna, dan hanya ada satu cara. Ia harus menemukan Sky. 
-            Hanya Sky yang mampu membantunya mendapatkan healer-nya kembali.
-
-            Sky, manusia yang takut gelap harus mengalami kebutaan karena suatu kecelakaan. 
-            Hal ini membuatnya kerap putus asa atas kondisinya. Namun, semuanya berubah saat Vee datang ke kehidupannya, 
-            memberikannya secercah harapan yang tak pernah ia duga sebelumnya, dengan satu penawaran yang sangat mengejutkan.
-
-            Lantas, bagaimanakah keputusan Sky? Apakah ia akan menerima tawaran Vee agar ia bisa melihat kembali? Apakah Sky siap untuk hidup dengan makhluk yang tidak pernah ia lihat sebelumnya? Atau memilih untuk buta selamanya dan larut dalam kegelapan?
-
-            Vee: “Aku bisa membuatmu melihat lagi, apa kau mau?”
-
-            Sky: “Ta-tapi, ak-aku ingin pulang. Aku tidak mau melakukannya.”
-
-            Vee: “Jika kau terus menangis, aku tidak akan pernah memulangkanmu.”
-
-            Sky: “Jadi, aku bisa pulang?”
-
-            Vee: “Bisa, setelah kau memberikanku healer yang sempurna.”`
-            },
-            mybest: { 
-            title: 'My Best Enemy', 
-            author: 'Nur Asyikin', 
-            genre: 'Teen Fiction', 
-            pages: '320 halaman', 
-            blurb: `
-            Perasaan cinta nggak bisa ditafsirkan oleh keadaan. Kemarin gue benci sama lo, sekarang gue falling in love sama lo. 
-            Kemarin lo baik sama gue, sekarang lo malah nyakitin gue.
-
-            Zeva:
-            Zidan? Maksud kalian, si makhluk ambis itu? Dia itu suka banget marah-marah sama gue, 
-            apalagi kalau lagi jelasin pelajaran. Banyak yang suka sama lo, termasuk Erika, si cewek yang kayak ular sawah, tuh. 
-            Makanya jadi cowok jangan terlalu perfect! Lo, Zidan Airlangga, adalah my best enemy tahu nggak?
-
-            Zidan:
-            Walaupun Zeva cantik, otak dia itu lemot unlimited 24 jam. Di satu sisi dia anaknya baik, kok. 
-            Dan saking polosnya, gue harus jagain dia dari orang-orang yang cuma mau manfaatin dia, salah satunya Arga. 
-            Tapi, yang namanya Zeva, emang orangnya ngeyel. Kata-kata pedas yang gue keluarin buat dia sama sekali nggak mempan! 
-            Lo, Zeva Anastasya, sebenarnya gue benci lo, tapi...`
-            },
-            sejarah: { 
-            title: 'Sejarah Dunia yang Disembunyikan', 
-            author: 'Jonathan Black', 
-            genre: 'Sejarah', 
-            pages: '636 halaman', 
-            blurb: `
-            Banyak orang mengatakan bahwa sejarah ditulis oleh para pemenang. Tetapi, 
-            bagaimana jika sejarah yang kita ketahui justru ditulis oleh orang yang salah?
-
-            Dalam buku kontroversial ini, Jonathan Black mengupas misteri sejarah dunia: dari mitologi Yunani, 
-            Mesir kuno, cerita rakyat Yahudi, Kristen, Freemason, Karel Agung, Don Quixote, George Washington, Hitler, hingga legenda Seribu Satu Malam.
-            Ia menunjukan bahwa sejarah yang biasa kita percaya mungkin hanyalah sebagian dari cerita yang disembunyikan selama lebih dari 3000 tahun.
-
-            “Inilah wahyu yang mengejutkan, yang menunjukkan bahwa dunia sangatlah aneh dan misterius...” – Graham Hancock
-
-            “Bacaan yang sangat mengasyikkan, penjelajahan esoteris dari awal sejarah hingga hari ini...” – Patricia Scanlon
-
-            “Penuh teori-teori aneh namun menghibur.” – Publishers Weekly` 
-            },
-            withyou: { 
-            title: 'With You', 
-            author: 'Aloisiatherin', 
-            genre: 'Novel', 
-            pages: '352 halaman', 
-            blurb: `
-            Stella Aziya, cewek liar dan bandel, yang tiba-tiba dinikahkan diam-diam dengan Samudera Haidar, cowok alim, tajir, berpendidikan tinggi, tapi kudet dan kaku. 
-            Padahal, Stella bercita-cita menikah dengan sugar daddy atau bad boy ketua geng.
-
-            Seribu rencana gila Stella buat untuk bikin Haidar kena mental. Namun kenyamanan perlahan tumbuh dalam dirinya.
-
-            Apakah kisah mereka akan berjalan mulus? Atau ke’prik’an Haidar tidak bisa meluluhkan hati Stella?
-
-            Stella: “Gue nikah sama cowok model apa sih, Tuhan?!”
-
-            Haidar: “Yang seperti saya ini cuma ada satu di dunia, lho.”
-
-            Stella: “Gila lo! Dasar suami prik!”
-
-            Haidar: “Astagfirullah, Stella…”`
-            }
-        };
-
+        // Fungsi showBookDetail
         function showBookDetail(bookId) {
             const book = books[bookId];
             if (book) {
@@ -481,27 +427,49 @@
             }
         }
 
+        // Fungsi closeModal
         function closeModal() {
             document.getElementById('bookModal').style.display = 'none';
         }
 
+        // Fungsi sendToWhatsApp
         function sendToWhatsApp(event) {
             event.preventDefault();
             const nama = document.getElementById('nama').value;
             const judul = document.getElementById('judul').value;
             const alamat = document.getElementById('alamat').value;
+            const sewaharga = document.getElementById('sewaharga').value;
             const ambilantar = document.getElementById('ambilantar').value;
             
-            if (!nama || !judul || !alamat || !ambilantar) {
+            if (!nama || !judul || !alamat || !sewaharga || !ambilantar) {
                 alert('Harap isi semua field!');
                 return;
             }
             
-            const message = `Halo Admin, saya ingin sewa buku:\nNama: ${nama}\nJudul Buku: ${judul}\nAlamat: ${alamat}\nSewa & Harga: ${sewa & harga}\nAmbil/Antar: ${ambilantar}`;
-            const url = `https://wa.me/6285260877449?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
+            // Sistem member: counter sewa
+            let rentalCount = localStorage.getItem('rentalCount') || 0;
+            rentalCount = parseInt(rentalCount) + 1;
+            localStorage.setItem('rentalCount', rentalCount);
+            
+            // Update status member
+            const statusEl = document.getElementById('memberStatus');
+            if (rentalCount >= 5) {
+                statusEl.innerHTML = '<em>Status Member: Member (diskon Rp.1.000 aktif!)</em>';
+                // Tambah diskon ke pesan jika member
+                const discount = rentalCount >= 5 ? ' (Diskon Rp.1.000 untuk member)' : '';
+                const message = `Halo Admin, saya ingin sewa buku:\nNama: ${nama}\nJudul Buku: ${judul}\nAlamat: ${alamat}\nSewa & Harga: ${sewaharga}${discount}\nAmbil/Antar: ${ambilantar}`;
+                const url = `https://wa.me/6285260877449?text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+            } else {
+                statusEl.innerHTML = `<em>Status Member: Belum member (sewa ${rentalCount} kali). Sewa 5 kali untuk diskon!</em>`;
+                const message = `Halo Admin, saya ingin sewa buku:\nNama: ${nama}\nJudul Buku: ${judul}\nAlamat: ${alamat}\nSewa & Harga: ${sewaharga}\nAmbil/Antar: ${ambilantar}`;
+                const url = `https://wa.me/6285260877449?text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+            }
         }
+
+        // Inisialisasi slider saat load
+        window.onload = generateSlider;
     </script>
 </body>
 </html>
-
