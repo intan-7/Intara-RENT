@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -108,22 +109,24 @@
         .book-card button:hover {
             background: #17867c;
         }
-        .slider-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0,0,0,0.5);
-            color: white;
-            border: none;
-            padding: 10px;
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 8px;
+        }
+        .slider-dots span {
+            width: 12px;
+            height: 12px;
+            background: #bbb;
+            border-radius: 50%;
+            display: inline-block;
             cursor: pointer;
-            z-index: 1;
+            transition: 0.3s;
         }
-        .slider-nav.prev {
-            left: 0;
-        }
-        .slider-nav.next {
-            right: 0;
+        .slider-dots .active {
+            background: #544b38;
+            transform: scale(1.2);
         }
         /* Modal Styles */
         .modal {
@@ -232,11 +235,8 @@
             <h3>📚 Lihat Daftar Buku</h3>
             <p>Geser slider untuk lihat buku:</p>
             <div class="slider">
-                <button class="slider-nav prev" onclick="slide(-1)">&#10094;</button>
-                <div class="slider-container" id="sliderContainer">
-                    <!-- Kartu Buku akan di-generate oleh JS -->
-                </div>
-                <button class="slider-nav next" onclick="slide(1)">&#10095;</button>
+                <div class="slider-container" id="sliderContainer"></div>
+                <div class="slider-dots" id="sliderDots"></div>
             </div>
         </div>
 
@@ -364,8 +364,13 @@
         // Generate slider buku
         function generateSlider() {
             const container = document.getElementById('sliderContainer');
+            const dotsContainer = document.getElementById('sliderDots');
+           
             container.innerHTML = '';
-            Object.keys(books).forEach(bookId => {
+            dotsContainer.innerHTML = '';
+
+            const bookKeys = Object.keys(books);
+            bookKeys.forEach((bookId, index) => {
                 const book = books[bookId];
                 const card = document.createElement('div');
                 card.className = 'book-card';
@@ -375,17 +380,31 @@
                     <button onclick="showBookDetail('${bookId}')">Lihat Detail</button>
                 `;
                 container.appendChild(card);
+
+                const dot = document.createElement('span');
+                dot.onclick = () => goToSlide(index);
+                dotsContainer.appendChild(dot);
+            });
+
+            updateDots();
+        }
+
+        function goToSlide(index) {
+            const totalSlides = Object.keys(books).length;
+            currentSlide = (index + totalSlides) % totalSlides;
+            const translateX = -currentSlide * 220;
+            document.getElementById('sliderContainer').style.transform = `translateX(${translateX}px)`;
+
+            updateDots();
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.slider-dots span');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
             });
         }
 
-        // Fungsi slide
-        function slide(direction) {
-            const container = document.getElementById('sliderContainer');
-            const totalSlides = Object.keys(books).length;
-            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-            const translateX = -currentSlide * 220; // 200px card + 20px margin
-            container.style.transform = `translateX(${translateX}px)`;
-        }
 
         // Fungsi showContent
         function showContent(id) {
@@ -475,6 +494,7 @@
 
         // Inisialisasi slider saat load
         window.onload = generateSlider;
+        generateSlider();
     </script>
 </body>
 </html>
