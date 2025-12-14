@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -24,6 +23,32 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .top-header {
+            text-align: center;
+            padding: 20px;
+            background: #cbb793;
+            border-bottom: 3px solid #b29f80;
+        }
+
+        .header-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+        }
+
+        .header-text h1 {
+            margin: 8px 0 2px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #1b1002;
+        }
+
+        .tagline {
+            margin: 0;
+            font-size: 18px;
+            color: #1b1002;
         }
         .logo {
             width: 100%;
@@ -94,7 +119,7 @@
         .book-card img {
             width: 100%;
             height: 150px;
-            object-fit: contain;
+            object-fit: cover;
             border-radius: 5px;
         }
         .book-card button {
@@ -214,11 +239,16 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="top-header">
+        <div class="header-text"> 
+            <h1>Intara RENT</h1>
+            <p class="tagline">Sewa Buku Mudah & Murah | Teman Bacamu di Setiap Cerita </p>
+        </div>
+        
         <!-- Gambar Logo/Sampul di Paling Atas -->
         <img src="Logo Intara Rent.jpeg" alt="Logo Intara Rent" class="logo"> <!-- Ganti src dengan URL gambar logo Anda -->
+        
 
-        <h1>💬 Intara RENT</h1>
         <p>Halo! 👋<br>Selamat datang di <strong>Sewa Buku Intara Rent</strong>.<br>Silakan pilih menu di bawah ini ya:</p>
 
         <div class="menu">
@@ -344,7 +374,6 @@
 
     <script>
         let currentSlide = 0;
-        let totalSlides = 0;
 
         // Data buku (dengan gambar placeholder)
         const books = {
@@ -359,7 +388,14 @@
             things: { title: 'Things Left Behind', author: 'Kim Sae Byoul, Jeon Ae Won', genre: 'Self Improvement 16+', pages: '199 halaman', blurb: 'Apakah yang terjadi setelah kita mati? Bagaimana kisah sesungguhnya di balik kematian seseorang? Sungguhkah kesepian bisa membuat orang kehilangan semangat hidup? Buku ini mengungkap beragam kisah nyata di balik kematian yang diceritakan oleh pengurus barang-barang peninggalan orang yang sudah meninggal, baik yang meninggal karena sebab natural maupun tidak. Saat diminta membersihkan barang-barang milik orang yang telah meninggal, terkadang ditemui kasus-kasus mengejutkan, seperti orang tua yang meninggal tanpa diketahui orang laun dan jenazahnya baru ditemukan berminggu-minggu kemudian. Ditulis dengan jernih dan menyentuh, buku yang mengilhami K-drama Move to Heaven ini menggabungkan pengalaman pribadi dan renungan personal dengan bahasa yang mengalir dan enak dibaca. Inilah buku menarik yang akan membuat pembaca menangis terharu, sekaligus menyadarkan kira akan hal-hal penting yang selama ini luput dari perhatian, antara lain betapa berharganya kehidupan keluarga, kasih sayang dan persahabatan.', image: 'Things Left Behind.jpeg' },
             kamibukan: { title: 'Kami (Bukan) Generasi Bac*t', author: 'J.S. Khairen', genre: 'Novel 18+', pages: '264 halaman', blurb: 'Gaji? Cukup, cukup besar. Karier? Mulus melesat. Bisnis? Sebentar lagi soft launching. Karya? Sudah banyak yang suka. Jodoh? Aih! Sedikit lagi. Mantap betul nasib Arko, Ga;a, Juwisa, Sania, Ogi, dan Randi. Para alumnus kampus UDEL yang amburadul ini ternyata berhasil melawan tikus-tikus kehidupan. namun, tikus-tikus itu nyatanya tidak sepenuhnya hilang. Mereka malah membesar, menyelinap dalam pekerjaan yang menyita waktu, mimpi-mimpi yang makin terasa jauh, dan dilema antara kembali ke kampung atau terus bertarung di kota tanpa tujuan. Akankah mereka menemukan jawaban dari semua itu? Ataukah terus melakukan pembenaran lewat bac*t tanpa mendengarkan apa yang sebenarnya diinginkan hati?.', image: 'Kami (Bukan) Generasi Bacot.jpeg' },
             ballerina: { title: 'Ballerina Berdarah', author: 'Alfida Nurhayati Adiana', genre: 'Novel', pages: '379 halaman', blurb: '7 balerina berbakat menerima undangan lomba yang misterius untuk mengikuti perlombaan balet iinternasional A.T.O.D 2022 di Thailand. Mereka tidak menyadari sebuah perangkap telah disiapkan begitu apik dan kelak membawa mereka terlibat terlalu jauh. Hingga satu per satu, korban berjatuhan dalam teror topeng kelinci, roh gentayangan, dan sebuah ilusi yang mematikan. Mereka terjebak dalam permainan ilmu hitam yang kelam. Sementara itu, Amabel adalah satu-satunya balerina yang terus mendapatkan petunjuk. Namun, apakah petunjuk itu akan membawanya pada kebenaran atau justru menguncinya di dunia yang penuh penderitaan?', image: 'Ballerina Berdarah.jpeg' },
-            teror: { title: 'Teror Minyak Happy', author: 'Vyatra Novrisyah', genre: 'Horor & Misteri 18+', pages: '223 halaman', blurb: 'Skripsi belum kelar, utang menumpuk, dan sekarang Dika bisa lihat hantu. Hidup mahasiswa semester akhir tidak pernah semengerikan ini. demi mengirit, Dika pindah ke sebuah kos tua peninggalan Belanda yang murah meriah. Awalnya hanya ada suara-suara aneh dan kursi yang bergerak sendiri. Namun, setelah seorang kakek misterius memberinya minyak yang katanya pembawa keberuntungan, Dika mulai bisa melihat "penghuni asli" kos itu: Anna si kuntilanak merah, Asep si genderuwo, Darmawan si pocong, dan Jumanta si jerangkong. Penghuni lain sudah kabur. Dika? Tidak bisa. Dia bokek. Saat hidupnya makin runyam, muncul kabal orangtuanya kecelakaan akibat sekelompok mafia. Dika pun mulai curiga: minyak ini betulan pembawa hoki, atau justru kutukan?.', image: 'Teror Minyak Happy.jpeg' }
+            teror: { title: 'Teror Minyak Happy', author: 'Vyatra Novrisyah', genre: 'Horor & Misteri 18+', pages: '223 halaman', blurb: 'Skripsi belum kelar, utang menumpuk, dan sekarang Dika bisa lihat hantu. Hidup mahasiswa semester akhir tidak pernah semengerikan ini. demi mengirit, Dika pindah ke sebuah kos tua peninggalan Belanda yang murah meriah. Awalnya hanya ada suara-suara aneh dan kursi yang bergerak sendiri. Namun, setelah seorang kakek misterius memberinya minyak yang katanya pembawa keberuntungan, Dika mulai bisa melihat "penghuni asli" kos itu: Anna si kuntilanak merah, Asep si genderuwo, Darmawan si pocong, dan Jumanta si jerangkong. Penghuni lain sudah kabur. Dika? Tidak bisa. Dia bokek. Saat hidupnya makin runyam, muncul kabal orangtuanya kecelakaan akibat sekelompok mafia. Dika pun mulai curiga: minyak ini betulan pembawa hoki, atau justru kutukan?.', image: 'Teror Minyak Happy.jpeg' },
+            seporsi: { title: 'Seporsi Mie Ayam Sebelum Mati', author: 'Brian Khrisna', genre: 'Novel', pages: '216 halaman', blurb: 'Seperti malam-malam lain, aku pulang selepas lembur. Orang-orang di kantor yang sudah menikah, mereka akan pulang ke keluarganya masing-masing. Sementara aku yang tidak punya siapa-siapa ini, sekarang masih duduk sendirian di parkiran mobil yang sudah lengang, bersama sebotol bir, rokok murah, dan sepotong kue ulang tahunku sendiri yang kubeli dari toko manisan dekat kantor. Aku takut kalau ternyata selama ini aku tidak pernah berhasil menjalani hidup seperti sebagaimana seharusnya. Di kepalaku sekarang, pertanyaan ini semakin lama semakin membesar. Pantaskah hidup ini kulanjutkan? Aku berdiri menatap ke langit malam. Kini tekadku sudah bulat. Aku akan bunuh diri 24 jam dari sekarang.', image: 'Seporsi Mie Ayam Sebelum Mati.jpeg' },
+            sisi: { title: 'Sisi Tergelap Surga', author: 'Brian Khrisna', genre: 'Novel 17+', pages: '304 halaman', blurb: 'Jakarta kerap menjadi pelabuhan bagi mereka yang datang membawa sekoper harapan. Mereka yang siap bertaruh dengan nasibnya sendiri-sendiri. Namun, kota ini selalu mampu melumat habis harapan dan menukarnya dengan keputusasaan. Pemulung, pengamen, pramuria yang menjajakan tubuh agar anaknya bisa makan, pemimpin-pemimpin kecil yang culas, lelaki tua di balik kostum badut ayam, pencuri motor yang ingin membeli obat untuk ibunya, remaja yang melumuri tubuh dengan cat perak, hingga mereka yang bergelut di terminal setelah terpaksa merelakan impiannya habis tergerus kejinya ibu kota. Di Jakarta, semua orang dipaksa bergelut dan bertempur demi bisa hidup dari hari ke hari. Dan di kampung inilsh semua itu dimulai. Sebuah cerita tentang kehidupan orang-orang yang hidup di sisi tergelap surga kota bernama Jakarta.', image: 'Sisi Tergelap Surga.jpeg' },
+            dompet: { title: 'Dompet Ayah Sepatu Ibu', author: 'J.S Khairen', genre: 'Novel 13+', pages: '216 halaman', blurb: 'Ada deras keringat ayah dan banjir tangis ibu dalam langkah kakimu hari ini. Dunia jahat dan kau kalah? Lihat telapak tanganmu. Ayah selalu menempa tangan itu agar tak menyerah. Ibu tak henti memapah tangan itu untuk berdoa. Bangkitlah untuk melangkah. Ini kisah tentang ayah dan ibu, yang cintanya lahir bahkan sebelum kau lahir, yang cintanya tumbuh bahkan sebelum kau bertumbuh. Ini kisah tentang ayah dan ibu, yang tangisannya mampu menyalakan api, yang tangisnya mampu memadamkan api. Api paling panas menyala saat ayah dan ibu menangis kecewa. Api paling panas padamoleh tangis perjuangan ayah dan ibu. Maka, ingatlah selalu rumah.', image: 'Dompet Ayah Sepatu Ibu.jpeg' },
+            laut: { title: 'Laut Bercerita', author: 'Leila S. Chudori', genre: 'Novel 18+', pages: '379 halaman', blurb: 'Jakarta, Maret 1998 Di sebuah senja, di sebuah rumah susun di Jakarta, mahasiswa bernama Biru Laut disergap empat lelaki tak dikenal. Bersama kawan-kawannya, Daniel Tumbuan, Sunu Dyantoro, Alex Perazon, dia dibawa ke sebuah tempat yang tak dikenal. Berbulan-bulan mereka disekap, diinterogasi, dipukul, ditendang, digantung, dan disetrum agar bersedia menjawab satu pertanyaan penting: siapakah yang berdiri di balik gerakan aktivis dan mahasiswa saat itu. Jakarta, Juni 1998 Keluarga Arya Wibisono, seperti biasa, pada hari Minggu sore memasak bersama, menyediakan makanan kesukaan Biru Laut. Sang Ayah akan meletakkan satu piring untuk dirinya, satu piring untuk sang ibu, satu piring untuk Biru Laut, dan satu piring untuk si bungsu Asmara Jati. Mereka duduk menanti dan menanti. Tapi Biru Laut tak kunjung muncul. Jakarta, 2000 Asmara Jati, adik Biru Laut, beserta Tim Komisi Orang Hilang yang dipimpin Aswin Pradana mencoba mencari jejak mereka yang hilang serta merekam dan mempelajari testimoni mereka yang kembali. Anjani, kekasih laut, para orangtua dan istri aktivis yang hilang menuntut kejelasan tentang anggota keluarga mereka. Sementara Biru Laut, dari dasar laut yang sunyi bercerita kepada kita, kepada dunia tentang apa yang terjadi pada dirinya dan kawan-kawannya.', image: 'Laut Bercerita.jpeg'},
+            parable: { title: 'Parable', author: 'Brian Khrisna', genre: 'Fiction', pages: '686 halaman', blurb: 'Berbeda dari cerita-cerita yang karakter utamanya selalu digambarkan sebagai cowok badboy, kaya raya, ganteng, digandrungi banyak wanita, ketua OSIS, cool, punya nama ke-bule-bule-an, jago berantem; yang ketemu cewek kuper, cupu, sering di-bully, gak punya banyak teman, tapi berakhir jadian dengan cowok paling tampan di sekolah. Cerita ini benar-benar berbeda. Sadewa Sagara adalah seorang anak SMA yang serba kekurangan. Lahir di keluarga miskin; selalu rangking terakhir di kelas; wajahnya lebih mirip dengan petasan banting ketimbang wajah manusia; tidak bisa berantem; tidak bisa bermain musik; tidak pernah pacaran. Sering ditolak cewek; nembak sepuluh kali, ditolak sebelas kali; tidak punya keahlian apa-apa. Keahliannya hanya satu, yaitu bernapas. Itu pun kalau diizinkan Tuhan. Sadewa serupa potret sebagian besar anak SMA di dunia nyata. Bukan siapa-siapa. Tidak punya cerita klise di hidupnya. Selalu tersisih. Selalu mengalah. Tak pernah menang. Jika kalian ingin mencoba bagaimana rasanya menjadi orang jelek di dunia ini, maka, selamat membaca sebuah cerita tentang seseorang yang tak pernah menjadi pemeran utama di kehidupannya sendiri.', image: 'Parable.jpeg' },
+            black: { title: 'Black Showman Dan Pembunuhan Di Kota Tak Bernama', author: 'Keigo Higashino', genre: 'Novel 17+', pages: '520 halaman', blurb: 'Pembunuhan bisa terjadi di  mana saja, termasuk di sebuah kota kecil, terpencil, dan nyaris terlupakan di tengah pandemi Covid-19. Seorang mantan guru SMP ditemukan tewas tercekik di halaman rumahnya sendiri. Polisi tidak tahu apakah ini pembunuhan terencana, pembunuhan tak disengaja, atau aksi pencurian yang berakhir dengan pembunuhan. Korban adalah guru yang disegani. Setelah pensiun pun, mantan murid-muridnya sering menghubunginya untuk meminta bantuan atau nasihat. Jadi, tentu saja para mantan muridnya, yang pulang ke kota itu demi menghadiri reuni, termasuk dalam daftar orang-orang yang dicurigai. Polisi kebingungan, dan si pembunuh lega karena identitasnya tidak akan pernah ketahuan. Namun, ia tidak menyangka bahwa putri korban akan muncul bersama pamannya-seorang mantan pesulap eksentrik-dan ikut menyelidiki apa yang sebenarnya terjadi dan mencari tahu siapa yang membunuh Kamio Eiichi.', image: 'Black Showman Dan Pembunuhan Di Kota Tak Bernama.'},
+            kios: { title: 'Kios Pasar Sore', author: 'Reda Gaudiamo', genre: 'Fiction', pages: '126 halaman', blurb: 'Di balik setiap wajah yang kita jumpsi, ada kisah yang nyaris tak pernah terucap. Melalui Kios Pasar Sore dan Cerita Orang-Orang Biasa Lainnya, Reda Gaudiamo merangkai tiga puluh satu cerita pendek yang mengingatkan kita, bahwa hidup tidak pernah benar-benar biasa. Di tangan Reda, cerita prang-orang biasa berubah menjadi potret kehidupan yang hangat, lucu, dan terkadang menyayat-serta membuat kita sadar, mungkin kita pun salah satunya.', image: 'Kios Pasar Sore.jpeg' }
         };
 
         // Generate slider buku
@@ -499,7 +535,6 @@
     </script>
 </body>
 </html>
-
 
 
 
